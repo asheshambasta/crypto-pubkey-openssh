@@ -4,7 +4,7 @@ module Crypto.PubKey.OpenSsh.Decode where
 
 import Prelude hiding (take)
 
-import Control.Applicative ((*>), (<|>))
+import Control.Applicative ((<|>))
 import Control.Monad (void, replicateM)
 import Data.ByteString.Char8 (ByteString)
 import Data.Char (isControl)
@@ -23,7 +23,7 @@ import qualified Crypto.Types.PubKey.RSA as RSA
 import Crypto.PubKey.OpenSsh.Types (OpenSshKeyType(..), OpenSshPublicKey(..),
                                     OpenSshPrivateKey(..))
 
-readType :: Monad m => ByteString -> m OpenSshKeyType
+readType :: (Monad m, MonadFail m) => ByteString -> m OpenSshKeyType
 readType "ssh-rsa" = return OpenSshKeyTypeRsa
 readType "ssh-dss" = return OpenSshKeyTypeDsa
 readType _ = fail "Invalid key type"
